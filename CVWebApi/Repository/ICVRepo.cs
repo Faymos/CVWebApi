@@ -1,5 +1,6 @@
 ﻿using CVWebApi.Dtos;
 using CVWebApi.Entities;
+using System.Threading.Tasks;
 
 namespace CVWebApi.Repository
 {
@@ -9,7 +10,7 @@ namespace CVWebApi.Repository
         Task<Users> GetCVByEmailAsync(string email);
         Task<ResponseDto> AddCVAsync(CVDto cv);
         Task<ResponseDto> UpdateCVAsync(CVDto cv);
-        Task DeleteCVAsync(int id);
+        Task<ResponseDto> DeleteCVAsync(string Email);
         Task<List<Users>> GetCVsByExperience(string JobTitle);
         Task<List<Users>> GetCVsBySkill(string skill);
         Task<List<Users>> GetCVsByQualification(string qualification);

@@ -192,6 +192,12 @@ namespace CVWebApi.Controllers
             }
             return Ok(cv);
         }
+
+        //[HttpDelete("DeleteRecord")]
+        //public async Task<ActionResult<dynamic>> DeleteRecord(string EmailAddress)
+        //{
+        //    return _cvService.DeleteCVAsync(EmailAddress);
+        //}
     }
 
 

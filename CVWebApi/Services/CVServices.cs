@@ -21,9 +21,9 @@ namespace CVWebApi.Services
             return _cVRepo.AddCVAsync(cv);
         }
 
-        public Task DeleteCVAsync(int id)
+        public Task<ResponseDto> DeleteCVAsync(string email)
         {
-            throw new NotImplementedException();
+            return _cVRepo.DeleteCVAsync(email);
         }
 
         public async Task<CVDto> GetCVByEmailAsync(string email)

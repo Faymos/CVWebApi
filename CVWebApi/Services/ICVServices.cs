@@ -9,7 +9,7 @@ namespace CVWebApi.Services
         Task<CVDto> GetCVByEmailAsync(string email);
         Task<ResponseDto> AddCVAsync(CVDto cv);
         Task<ResponseDto> UpdateCVAsync(CVDto cv);
-        Task DeleteCVAsync(int id);
+        Task<ResponseDto> DeleteCVAsync(string email);
         Task<List<CVDto>> GetCVsByExperience(string jobTitle);
         Task<List<CVDto>> GetCVsBySkill(string skill);
         Task<List<CVDto>> GetCVsByQualification(string qualification);

@@ -142,10 +142,6 @@ namespace CVWebApi.Repository
                 }
             }
         }
-        public Task DeleteCVAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
         public async Task<Users> GetCVByEmailAsync(string emailAddress)
         {
             try
@@ -541,6 +537,112 @@ namespace CVWebApi.Repository
                 throw;
             }
         }
+        //public async Task<ResponseDto> DeleteCVAsync(string Email)
+        //{
+        //    ResponseDto response = new();
+        //    try
+        //    {
 
+        //        _cVContext.Database.SetCommandTimeout(120);
+
+        //        var user = await _cVContext.Users.F(u => u.EmailAddress == Email.Trim());
+        //        if (user == null)
+        //        {
+        //            return response = new()
+        //            {
+        //                Message = $"No record was found",
+        //                Status = HttpStatusCode.ExpectationFailed,
+        //                Success = false
+        //            };
+        //        }
+        //        _cVContext.Users.Remove(user);
+        //        await _cVContext.SaveChangesAsync();
+
+        //        return response = new()
+        //        {
+        //            Message = $"Record Deleted Successfully",
+        //            Status = HttpStatusCode.OK,
+        //            Success = true
+        //        };
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return response = new()
+        //        {
+        //            Message = $"failed to delete record: {ex.Message}",
+        //            Status = HttpStatusCode.ExpectationFailed,
+        //            Success = false
+        //        };
+        //    }
+        //}
+        public async Task<ResponseDto> DeleteCVAsync(string email)
+        {
+            ResponseDto response = new();
+
+            try
+            {
+                var executionStrategy = _cVContext.Database.CreateExecutionStrategy();
+                var res = await executionStrategy.ExecuteAsync(async () =>
+                {
+                    using var dbContextTransaction = await _cVContext.Database.BeginTransactionAsync();
+                    try
+                    {
+                        var user = await _cVContext.Users.FirstOrDefaultAsync(u => u.EmailAddress == email.Trim());
+
+                        if (user != null)
+                        {
+                            _cVContext.Users.Remove(user);
+                            await _cVContext.SaveChangesAsync();
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        await dbContextTransaction.RollbackAsync();
+                        throw ex;
+                    }
+                });
+                if (!res)
+                {
+                    return response = new()
+                    {
+                        Message = "Record not found, No Record was Deleted",
+                        Status = HttpStatusCode.BadRequest,
+                        Success = false
+                    };
+                }
+                return response = new()
+                {
+                    Message = "Record Deleted Successfully",
+                    Status = HttpStatusCode.OK,
+                    Success = true
+                };
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    return response = new()
+                    {
+                        Message = ex.InnerException.Message,
+                        Status = HttpStatusCode.BadRequest,
+                        Success = false
+                    };
+                }
+                else
+                {
+                    return response = new()
+                    {
+                        Message = ex.Message,
+                        Status = HttpStatusCode.BadRequest,
+                        Success = false
+                    };
+                }
+            }
+        }
     }
 }
