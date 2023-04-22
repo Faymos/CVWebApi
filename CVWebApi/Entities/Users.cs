@@ -1,4 +1,7 @@
-﻿namespace CVWebApi.Entities
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+
+namespace CVWebApi.Entities
 {
     public class Users
     {

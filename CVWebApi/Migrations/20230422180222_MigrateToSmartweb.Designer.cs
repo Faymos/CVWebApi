@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CVWebApi.Migrations
 {
     [DbContext(typeof(CVContext))]
-    [Migration("20230421075915_CVWebApiUpdated")]
-    partial class CVWebApiUpdated
+    [Migration("20230422180222_MigrateToSmartweb")]
+    partial class MigrateToSmartweb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,6 +100,7 @@ namespace CVWebApi.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EmailAddress")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Firstname")
