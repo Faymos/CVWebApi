@@ -23,7 +23,7 @@ namespace CVWebApi.Controllers
 
         [HttpGet("GetAllCVs")]
         [ProducesResponseType(typeof(List<CVDto>), 200)]
-        [ProducesResponseType(typeof(ResponseDto), 400)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult<List<dynamic>>> GetCVs()
         {
             var cvs = await _cvService.GetCVsAsync();
@@ -43,7 +43,7 @@ namespace CVWebApi.Controllers
 
         [HttpGet("GetCvByEmail")]
         [ProducesResponseType(typeof(CVDto), 200)]
-        [ProducesResponseType(typeof(ResponseDto), 400)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult<dynamic>> GetCVByEmail(string email)
         {
             var cv = await _cvService.GetCVByEmailAsync(email);
@@ -86,7 +86,7 @@ namespace CVWebApi.Controllers
         
         [HttpGet("GetByExperience")]
         [ProducesResponseType(typeof(List<CVDto>), 200)]
-        [ProducesResponseType(typeof(ResponseDto), 400)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public ActionResult<List<dynamic>> GetByExperience(string JobTitle)
         {
             var cvs = _cvService.GetCVsByExperience(JobTitle);
@@ -107,7 +107,7 @@ namespace CVWebApi.Controllers
 
         [HttpGet("GetBySkill")]
         [ProducesResponseType(typeof(List<CVDto>), 200)]
-        [ProducesResponseType(typeof(ResponseDto), 400)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public  ActionResult<List<dynamic>> GetBySkill(string skill)
         {
             var cvs =  _cvService.GetCVsBySkill(skill);
@@ -129,7 +129,7 @@ namespace CVWebApi.Controllers
 
         [HttpGet("GetByQualification")]
         [ProducesResponseType(typeof(List<CVDto>), 200)]
-        [ProducesResponseType(typeof(ResponseDto), 400)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public ActionResult<List<dynamic>> GetByQualification(string qualification)
         {
             var cvs = _cvService.GetCVsByQualification(qualification);
@@ -174,7 +174,7 @@ namespace CVWebApi.Controllers
 
         [HttpGet("GetCvByYearsOfExperienceWithMinimumYears")]
         [ProducesResponseType(typeof(List<CVDto>), 200)]
-        [ProducesResponseType(typeof(ResponseDto), 400)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult<dynamic>> GetCVByYearsOfExperienceMin(int minimumYears)
         {
             var cv = await _cvService.GetCVsByYearOfExperiences(minimumYears);
@@ -194,7 +194,7 @@ namespace CVWebApi.Controllers
        
         [HttpGet("GetCvByYearsOfExperienceWithMaximumYear")]
         [ProducesResponseType(typeof(List<CVDto>), 200)]
-        [ProducesResponseType(typeof(ResponseDto), 400)]
+        [ProducesResponseType(typeof(ResponseDto), 404)]
         public async Task<ActionResult<dynamic>> GetCVByYearsOfExperienceMax(int maximumYears)
         {
             var cv = await _cvService.GetCVsByYearOfExperiencesMax(maximumYears);

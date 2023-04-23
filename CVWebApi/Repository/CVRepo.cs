@@ -56,45 +56,86 @@ namespace CVWebApi.Repository
                             dbContextTransaction.Rollback();
                             throw;
                         }
+                        if(cv.WorkExperience != null)
+                        {
+                            foreach (var item in cv.WorkExperience)
+                            {
+                                WorkExperience workExperience = new()
+                                {
+                                    Organization = item.Organization,
+                                    JobTitle = item.JobTitle,
+                                    EndDate = item.EndDate,
+                                    UsersId = users.Id,
+                                    DateCreated = DateTime.Now,
+                                    StartDate = item.StartDate,
+                                };
 
-                        foreach (var item in cv.WorkExperience)
+                                workExperiences.Add(workExperience);
+                            }
+                        }
+                        else
                         {
                             WorkExperience workExperience = new()
                             {
-                                Organization = item.Organization,
-                                JobTitle = item.JobTitle,
-                                EndDate = item.EndDate,
+                                Organization =null,
+                                JobTitle = null,
+                                EndDate = null,
                                 UsersId = users.Id,
                                 DateCreated = DateTime.Now,
-                                StartDate = item.StartDate,
+                                StartDate = null,
                             };
 
                             workExperiences.Add(workExperience);
                         }
-
-                        foreach (var item in cv.Skills)
+                        if(cv.Skills != null)
+                        {
+                            foreach (var item in cv.Skills)
+                            {
+                                Skills skill = new()
+                                {
+                                    Skill = item.Skill,
+                                    UsersId = users.Id,
+                                    DateCreated = DateTime.Now
+                                };
+                                skills.Add(skill);
+                            }
+                        }
+                        else
                         {
                             Skills skill = new()
                             {
-                                Skill = item.Skill,
+                                Skill = null,
                                 UsersId = users.Id,
                                 DateCreated = DateTime.Now
                             };
                             skills.Add(skill);
                         }
-
-                        foreach (var item in cv.Qualifications)
+                        if (cv.Qualifications == null)
                         {
                             Qualifications qualification = new()
                             {
-                                Qualification = item.Qualification,
-                                TypeOfQualifiction = item.TypeOfQualifiction,
+                                Qualification = null,
+                                TypeOfQualifiction = null,
                                 UsersId = users.Id,
                                 DateCreated = DateTime.Now
                             };
                             qualifications.Add(qualification);
                         }
+                        else
+                        {
+                            foreach (var item in cv.Qualifications)
+                            {
+                                Qualifications qualification = new()
+                                {
+                                    Qualification = item.Qualification,
+                                    TypeOfQualifiction = item.TypeOfQualifiction,
+                                    UsersId = users.Id,
+                                    DateCreated = DateTime.Now
+                                };
+                                qualifications.Add(qualification);
+                            }
 
+                        }
                         await _cVContext.Qualifications.AddRangeAsync(qualifications);
                         await _cVContext.Skills.AddRangeAsync(skills);
                         await _cVContext.WorkExperience.AddRangeAsync(workExperiences);
@@ -130,6 +171,15 @@ namespace CVWebApi.Repository
                         Status = HttpStatusCode.BadRequest,
                         Success = false
                     }; 
+                }
+                else if (ex.InnerException != null && ex.InnerException.Message.Contains("The INSERT statement conflicted with the CHECK constraint \"CK_EmailAddress\""))
+                {
+                    return response = new()
+                    {
+                        Message = $"Please provide a valid email Address {cv.EmailAddress} is not valid",
+                        Status = HttpStatusCode.BadRequest,
+                        Success = false
+                    };
                 }
                 else
                 {
@@ -276,52 +326,107 @@ namespace CVWebApi.Repository
                             
                             _cVContext.WorkExperience.RemoveRange(existingWorkExperiences);
 
-                            foreach (var item in cv.WorkExperience)
+                            if(cv.WorkExperience != null)
                             {
-                                WorkExperience workExperience = new()
+                                foreach (var item in cv.WorkExperience)
                                 {
-                                    Organization = item.Organization,
-                                    JobTitle = item.JobTitle,
-                                    EndDate = item.EndDate,
-                                    UsersId = user.Id,
-                                    DateCreated = DateTime.Now,
-                                    DateModified = DateTime.Now,
-                                    StartDate = item.StartDate,
-                                };
-                                workExperiences.Add(workExperience);
+                                    WorkExperience workExperience = new()
+                                    {
+                                        Organization = item.Organization,
+                                        JobTitle = item.JobTitle,
+                                        EndDate = item.EndDate,
+                                        UsersId = user.Id,
+                                        DateCreated = DateTime.Now,
+                                        DateModified = DateTime.Now,
+                                        StartDate = item.StartDate,
+                                    };
+                                    workExperiences.Add(workExperience);
+                                }
+                            }
+                            else
+                            {
+
+                                foreach (var item in existingWorkExperiences)
+                                {
+                                    WorkExperience workExperience = new()
+                                    {
+                                        Organization = item.Organization,
+                                        JobTitle = item.JobTitle,
+                                        EndDate = item.EndDate,
+                                        UsersId = user.Id,
+                                        DateCreated = DateTime.Now,
+                                        DateModified = DateTime.Now,
+                                        StartDate = item.StartDate,
+                                    };
+                                    workExperiences.Add(workExperience);
+                                }
                             }
                             await _cVContext.WorkExperience.AddRangeAsync(workExperiences);
 
                             var existingSkills = await _cVContext.Skills.Where(s => s.UsersId == user.Id).ToListAsync();
                             _cVContext.Skills.RemoveRange(existingSkills);
 
-                            foreach (var item in cv.Skills)
+                           if(cv.Skills == null)
                             {
-                                Skills skill = new()
+                                foreach (var item in existingSkills)
                                 {
-                                    Skill = item.Skill,
-                                    UsersId = user.Id,
-                                    DateCreated = DateTime.Now,
-                                    DateModified = DateTime.Now
-                                };
-                                skills.Add(skill);
+                                    Skills skill = new()
+                                    {
+                                        Skill = item.Skill,
+                                        UsersId = user.Id,
+                                        DateCreated = DateTime.Now,
+                                        DateModified = DateTime.Now
+                                    };
+                                    skills.Add(skill);
+                                }
+                            }
+                            else
+                            {
+                                foreach (var item in cv.Skills)
+                                {
+                                    Skills skill = new()
+                                    {
+                                        Skill = item.Skill,
+                                        UsersId = user.Id,
+                                        DateCreated = DateTime.Now,
+                                        DateModified = DateTime.Now
+                                    };
+                                    skills.Add(skill);
+                                }
                             }
                             await _cVContext.Skills.AddRangeAsync(skills);
 
                             var existingQualifications = await _cVContext.Qualifications.Where(q => q.UsersId == user.Id).ToListAsync();
                             _cVContext.Qualifications.RemoveRange(existingQualifications);
-
-                            foreach (var item in cv.Qualifications)
+                            if(cv.Qualifications == null)
                             {
-                                Qualifications qualification = new()
+                                foreach (var item in existingQualifications)
                                 {
-                                    Qualification = item.Qualification,
-                                    TypeOfQualifiction = item.TypeOfQualifiction,
-                                    UsersId = user.Id,
-                                    DateCreated = DateTime.Now,
-                                    DateModified = DateTime.Now
-                                };
-                                qualifications.Add(qualification);
+                                    Qualifications qualification = new()
+                                    {
+                                        Qualification = item.Qualification,
+                                        TypeOfQualifiction = item.TypeOfQualifiction,
+                                        UsersId = user.Id,
+                                        DateCreated = DateTime.Now,
+                                        DateModified = DateTime.Now
+                                    };
+                                    qualifications.Add(qualification);
+                                }
+                            }
+                            else
+                            {
+                                foreach (var item in cv.Qualifications)
+                                {
+                                    Qualifications qualification = new()
+                                    {
+                                        Qualification = item.Qualification,
+                                        TypeOfQualifiction = item.TypeOfQualifiction,
+                                        UsersId = user.Id,
+                                        DateCreated = DateTime.Now,
+                                        DateModified = DateTime.Now
+                                    };
+                                    qualifications.Add(qualification);
+                                }
                             }
                             await _cVContext.Qualifications.AddRangeAsync(qualifications);
                             await _cVContext.SaveChangesAsync();
