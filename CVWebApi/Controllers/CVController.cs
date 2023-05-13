@@ -1,9 +1,7 @@
-using AutoMapper;
+
 using CVWebApi.Dtos;
-using CVWebApi.Entities;
 using CVWebApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace CVWebApi.Controllers

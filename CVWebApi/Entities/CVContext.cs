@@ -1,7 +1,6 @@
-﻿using CVWebApi.Dtos;
+﻿
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Collections.Generic;
+
 
 namespace CVWebApi.Entities
 {

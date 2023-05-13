@@ -3,6 +3,7 @@ using CVWebApi.Entities;
 using CVWebApi.Mapper;
 using CVWebApi.Repository;
 using CVWebApi.Services;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -40,29 +41,26 @@ builder.Logging.AddSerilog(logger);
 builder.Host.UseSerilog(((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration)));
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
+    options.AddDefaultPolicy(builder =>
     {
         builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
+               .AllowAnyHeader()
+               .AllowAnyMethod();
     });
 });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
 app.UseSwagger();
 app.UseSwaggerUI();
-if (app.Environment.IsDevelopment())
+
+app.UseRouting();
+app.UseCors(b => b.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
-    
-}
-
-app.UseHttpsRedirection();
-
+    ForwardedHeaders = ForwardedHeaders.XForwardedProto
+});
 app.UseAuthorization();
-
 app.MapControllers();
-app.UseCors("AllowAll");
-
 app.Run();

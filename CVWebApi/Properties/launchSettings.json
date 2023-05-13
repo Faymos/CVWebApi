@@ -4,20 +4,19 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:59719",
-      "sslPort": 44344
+      "applicationUrl": "http://localhost:22664",
+      "sslPort": 44313
     }
   },
   "profiles": {
-    "CVWebApi": {
+    "VirtualAccountEngine.WebApi": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7111;http://localhost:5244",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:57276;http://localhost:57277"
     },
     "IIS Express": {
       "commandName": "IISExpress",

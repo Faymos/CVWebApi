@@ -537,44 +537,6 @@ namespace CVWebApi.Repository
                 throw;
             }
         }
-        //public async Task<ResponseDto> DeleteCVAsync(string Email)
-        //{
-        //    ResponseDto response = new();
-        //    try
-        //    {
-
-        //        _cVContext.Database.SetCommandTimeout(120);
-
-        //        var user = await _cVContext.Users.F(u => u.EmailAddress == Email.Trim());
-        //        if (user == null)
-        //        {
-        //            return response = new()
-        //            {
-        //                Message = $"No record was found",
-        //                Status = HttpStatusCode.ExpectationFailed,
-        //                Success = false
-        //            };
-        //        }
-        //        _cVContext.Users.Remove(user);
-        //        await _cVContext.SaveChangesAsync();
-
-        //        return response = new()
-        //        {
-        //            Message = $"Record Deleted Successfully",
-        //            Status = HttpStatusCode.OK,
-        //            Success = true
-        //        };
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return response = new()
-        //        {
-        //            Message = $"failed to delete record: {ex.Message}",
-        //            Status = HttpStatusCode.ExpectationFailed,
-        //            Success = false
-        //        };
-        //    }
-        //}
         public async Task<ResponseDto> DeleteCVAsync(string email)
         {
             ResponseDto response = new();
