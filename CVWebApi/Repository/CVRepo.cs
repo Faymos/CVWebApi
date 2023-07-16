@@ -89,6 +89,7 @@ namespace CVWebApi.Repository
                             {
                                 Qualification = item.Qualification,
                                 TypeOfQualifiction = item.TypeOfQualifiction,
+                                YearObtain = item.YearObtain,
                                 UsersId = users.Id,
                                 DateCreated = DateTime.Now
                             };
@@ -317,6 +318,7 @@ namespace CVWebApi.Repository
                                 {
                                     Qualification = item.Qualification,
                                     TypeOfQualifiction = item.TypeOfQualifiction,
+                                    YearObtain = item.YearObtain,
                                     UsersId = user.Id,
                                     DateCreated = DateTime.Now,
                                     DateModified = DateTime.Now
@@ -417,6 +419,7 @@ namespace CVWebApi.Repository
                                                              Id = q.Id,
                                                              Qualification = q.Qualification,
                                                              TypeOfQualifiction = q.TypeOfQualifiction,
+                                                             YearObtain =q.YearObtain,
                                                              UsersId = q.UsersId,
                                                              DateCreated = q.DateCreated
                                                          }).ToList()
